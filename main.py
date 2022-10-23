@@ -1,57 +1,60 @@
-import cv2
-import numpy as np
-from matplotlib import pyplot as plt
+import random
+import string
+from tkinter import *
+from captcha.image import ImageCaptcha
+from PIL import ImageTk, Image
 
-# 1. Displaying Image on the screen
-# img = cv2.imread("cat.png", cv2.IMREAD_COLOR)
-# cv2.imshow("Cat Image", img)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
+# Simple program to make a Captcha text image from user input
+# img = ImageCaptcha(width = 300, height = 100)   # Create image window
+# text = input("Enter the Text for Captcha: ")    # Ask user for Text for captcha
+# Cap_data = img.generate(text)                   # Generate the image of the text
+# img.write(text, 'Captcha1.png')                 # Save the image
 
-# 2. Color Space
-# image = cv2.imread('RGB.png')
-# B, G, R = cv2.split(image)
-#
-# cv2.imshow("original", image)
-# cv2.waitKey(0)
+# Simple program to make a Captcha text image using random
+# image = ImageCaptcha(width = 300, height = 100)                 # Create image window
+# characters = string.ascii_letters + string.digits               # Set of all alphabets and digits
+# string1 = ''.join(random.choice(characters) for i in range(8))  # Generate random text
+# Captcha_data = image.generate(string1)                          # Generate the image of the text
+# image.write(string1, 'Captcha2.png')                            # Save the image
 
-# cv2.imshow("blue", B) # or G or R
-# cv2.waitKey(0)
+# Program to make a Captcha text image at random and then having the user verify
 
-# 3. Corner Point Detection on Images
-# img = cv2.imread('shapes.png')
+# Creating user interactive window
+window = Tk()
+window.title("Captcha Verification App")
+window.geometry("500x300")
 
-# original image -> gray scale image
-# gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# Create captcha image
+cap = ImageCaptcha(width=300, height=100)
+characters = string.ascii_letters + string.digits
+val = ''.join(random.choice(characters) for i in range(4))
+print(val)
+images = cap.generate_image(val)
+images.show()
+images.save("Final_Captcha.png")
+# cap.write(val, 'Final_Captcha.png')
 
-# detect corners with the goodFeaturesToTrack
-# corners = cv2.goodFeaturesToTrack(gray, 27, 0.01, 10)
-# corners = np.int0.(corners)
-#
-# for i in corners:
-#     x, y = i.ravel()
-#     cv2.circle(img, (x, y), 2, 255, -1)
-#
-# plt.imshow(img), plt.show()
+# Ask for input
+label1 = Label(window, text="Enter Captcha: ")
+label1.pack(pady=10)
 
-# 4. Coordinates of an image using event attributes
-# def click_event(event, x, y, flags, params):
-#     # checking for button click
-#     if event == cv2.EVENT_LBUTTONDOWN:
-#         # displaying the coordinates on the console
-#         print('(',x, ', ', y,')')
-#         # displaying the coordinates on the image
-#         font = cv2.FONT_HERSHEY_SIMPLEX
-#         fontSize = 1
-#         coordinates = (x,y)
-#         color = (0, 0, 255)
-#         width = 2
-#         cv2.putText(img, str(x) + ',' + str(y), coordinates, font, fontSize, color, width)
-#         cv2.imshow('image', img)
-#
-# img = cv2.imread('cat.png')
-# cv2.imshow('image', img)
-# # setting mouse handler for the image and calling the click_event() function
-# cv2.setMouseCallback('image', click_event)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
+# Receive Input from User
+input1 = StringVar()
+entry = Entry(window, textvariable=input1)
+entry.pack(pady=10)
+
+def check():
+    if val == input1.get():
+        final_output.config(text="Captcha verified successfully!")
+    else:
+        final_output.config(text="Captcha failed.")
+
+# Button
+click = Button(window, text="Verify", command=check, width=10)
+click.pack(pady=10)
+
+# Screen Label
+final_output = Label(window, text="")
+final_output.pack(pady=10)
+
+window.mainloop()

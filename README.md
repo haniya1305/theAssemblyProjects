@@ -1,6 +1,7 @@
 # TheAssemblyProjects
 
-**Summer Internship 2022 **
+**Summer Internship 2022**
+
 *May- August 2022*
 
 During my summer internship, I worked for a non-profit organization called The Assembly, under in5 Technologies. 
